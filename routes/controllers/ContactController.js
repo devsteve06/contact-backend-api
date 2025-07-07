@@ -11,7 +11,18 @@ const getContacts = (req,res)=>{
 //@route POST /api/contacts/
 //@access public
 const createContact = (req,res)=>{
+
+     //error handling for client-side requests
+     const {username, email, phone} =req.body
+     if (!username || !email || !phone){
+          res.status(400);
+          throw new Error("all fields are required.");
+          
+     }else{
+                console.log('the request body is : ',req.body);
      res.status(201).json({msg : "created a new contact"})
+     }
+    
 }
 
 //@desc gets a contact

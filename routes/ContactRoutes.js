@@ -7,14 +7,8 @@ const {getContacts,
      deleteContact} = require('./controllers/ContactController') //controller handling import
 
 //routes go here
-router.route('/').get(getContacts)
+router.route('/').get(getContacts).post(createContact)
 
-router.route('/').post(createContact)
-
-router.route('/:id').get(getContact)
-
-router.route('/:id').put(updateContact)
-
-router.route('/:id').delete(deleteContact)
+router.route('/:id').get(getContact).put(updateContact).delete(deleteContact)
 
 module.exports = router;
