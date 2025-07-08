@@ -4,7 +4,7 @@ const {getContacts,
      getContact,
      createContact,
      updateContact,
-     deleteContact} = require('./controllers/ContactController') //controller handling import
+     deleteContact} = require('../controllers/ContactController') //controller handling import
 
 //routes go here
 router.route('/').get(getContacts).post(createContact)
