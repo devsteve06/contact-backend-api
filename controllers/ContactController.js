@@ -1,49 +1,59 @@
 //handles the business logic
 
+const asyncHandler = require("express-async-handler")
+const Contact = require("../models/contactModel")
+
 //@desc get all contacts
 //@route GET /api/contacts
 //@access public
-const getContacts = async (req,res)=>{
-     res.status(200).json({msg : "this is the endpoint for all contacts"})
-}
+const getContacts = asyncHandler(async (req,res)=>{
+     const contacts = await Contact.find();
+     res.status(200).json(contacts)
+}) 
 
 //@desc creates new contacts
 //@route POST /api/contacts/
 //@access public
-const createContact = async (req,res)=>{
+const createContact = asyncHandler( async (req,res)=>{
 
      //error handling for client-side requests
-     const {username, email, phone} =req.body
-     if (!username || !email || !phone){
+     const {name, email, phone} =req.body
+
+     if (!name || !email || !phone){
           res.status(400);
           throw new Error("all fields are required.");
           
      }else{
-                console.log('the request body is : ',req.body);
-     res.status(201).json({msg : "created a new contact"})
+                
+          console.log('the request body is : ',req.body);
+          const contact = await Contact.create({
+               name,
+               email,
+               phone
+          })
+          res.status(201).json({contact})
      }
-    
-}
+})
 
 //@desc gets a contact
 //@route GET /api/contacts/:id
 //@access public
-const getContact = async (req,res)=>{
+const getContact = asyncHandler(async (req,res)=>{
      res.status(200).json({msg : `Obtained contact ${req.params.id}`})
-}
+})
 //@desc updates a contact
 //@route PUT /api/contacts
 //@access public
-const updateContact = async (req,res)=>{
+const updateContact = asyncHandler( async (req,res)=>{
      res.status(200).json({msg : `updated contact ${req.params.id}`})
 }
-
+)
 //@desc removes a contact
 //@route DELETE /api/contacts
 //@access public
-const deleteContact =async  (req,res)=>{
+const deleteContact = asyncHandler(async  (req,res)=>{
      res.status(200).json({msg :`removed contact ${req.params.id}` })
-}
+})
 
 
 module.exports = {getContacts, getContact, createContact,updateContact, deleteContact}
