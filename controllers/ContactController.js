@@ -23,22 +23,22 @@ const createContact = asyncHandler( async (req,res)=>{
           res.status(400);
           throw new Error("all fields are required.");
           
-     }else{
-                
-          console.log('the request body is : ',req.body);
-          const contact = await Contact.create({
-               name,
-               email,
-               phone
-          })
-          res.status(201).json({contact})
      }
+      console.log('the request body is : ',req.body);
+      const contact = await Contact.create({
+          name,
+           email,
+          phone
+          })
+      res.status(201).json(contact)
+     
 })
 
 //@desc gets a contact
 //@route GET /api/contacts/:id
 //@access public
 const getContact = asyncHandler(async (req,res)=>{
+     const contact = Contact.findById()
      res.status(200).json({msg : `Obtained contact ${req.params.id}`})
 })
 //@desc updates a contact
