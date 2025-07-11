@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const { connect } = require('../routes/ContactRoutes');
 
 const connectDb = async () => {
     try { 
@@ -7,7 +6,7 @@ const connectDb = async () => {
         console.log("connection successful : ", connect.connection.host, connect.connection.name);
         
     } catch (error) {
-        console.log(err);
+        console.error(error);
         process.exit(1)//exits the connection process
         
     }

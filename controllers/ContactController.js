@@ -38,12 +38,14 @@ const createContact = asyncHandler( async (req,res)=>{
 //@route GET /api/contacts/:id
 //@access public
 const getContact = asyncHandler( async(req,res)=>{
+     //error handling for client-side requests
+     console.log('the request params are : ',req.params.id);
+     
      const contact = await contactModel.findById(req.params.id)
      if (!contact) {
           res.status(404);
           throw new Error("contact not found");
      }
-     
      res.status(200).json(contact)
      
     
@@ -52,17 +54,16 @@ const getContact = asyncHandler( async(req,res)=>{
 //@route PUT /api/contacts
 //@access public
 const updateContact = asyncHandler( async(req,res)=>{
-     const contact = await contactModel.findById(req.params.id)
-     if (!contact) {
-          res.status(404);
-          throw new Error("contact not found");
-     }
      const updatedContact = await contactModel.findByIdAndUpdate(
           req.params.id,
           req.body,
           {new : true}
      )
 
+     if (!updatedContact) {
+          res.status(404);
+          throw new Error("contact not found");
+     }
      res.status(200).json(updatedContact)
 }
 )
