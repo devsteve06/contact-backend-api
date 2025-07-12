@@ -10,6 +10,7 @@ connectDb() //instance of connection using mongodb
 //middleware
 app.use(express.json()) //handles req from client to server
 app.use('/api/contacts',require('./routes/ContactRoutes'))
+app.use('/api/users',require('./routes/userRoutes'))
 app.use(errorHandler) //custom middleware for error handling
 
 
