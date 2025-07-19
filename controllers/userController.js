@@ -1,5 +1,5 @@
 const asyncHandler = require('express-async-handler')
-const user = require('../models/userModel')
+const User = require('../models/userModel')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
@@ -15,7 +15,7 @@ const registerUser = asyncHandler(async (req,res)=>{
         throw new Error("Please fill all the fields")
     }
 
-    const userExists = await user.findOne({email})
+    const userExists = await User.findOne({email})
     if(userExists){
         res.status(400)
         throw new Error("User already exists")
@@ -24,19 +24,19 @@ const registerUser = asyncHandler(async (req,res)=>{
     const hashedPassword = await bcrypt.hash(password,10)
     console.log(hashedPassword)
 
-    const newUser = await user.create({
+    const user = await User.create({
         username,
         email,
         password:hashedPassword
     })
 
-    console.log(newUser)
+    console.log(user)
 
-    if(newUser){    
+    if(user){    
     res.status(201).json({
-        _id: newUser.id,
-        username: newUser.username,
-        email: newUser.email 
+        _id: user.id,
+        username: user.username,
+        email: user.email 
     })
     }else{
         res.status(400)
@@ -56,19 +56,19 @@ const loginUser = asyncHandler(async (req,res)=>{
         throw new Error("all fields are mandatory ")
     }
 
-    const new_user =await user.findOne({email})
-    if (!new_user) {
+    const user =await User.findOne({email})
+    if (!user) {
         res.status(400)
         throw new Error("user not found,please sign up first")
     }
 
-        if (new_user && await bcrypt.compare(password, new_user.password) ) {
+        if (user && await bcrypt.compare(password, user.password) ) {
                
             const accessToken = jwt.sign(
-             { new_user : {
-                  email : new_user.email,
-                password : new_user.password,
-                id : new_user.id
+             { user : {
+                  username: user.username,
+                  email: user.email,
+                  id: user.id
               }
             },
             process.env.ACCESS_TOKEN_SECRET,
@@ -86,7 +86,7 @@ const loginUser = asyncHandler(async (req,res)=>{
 //@route GET /api/users/current
 //@access private
 const currentUser = asyncHandler(async (req,res)=>{
-    res.json({message:"succcessfully accessed current user endpoint"})
+    res.status(200).json(req.user);
 } ) 
 
 module.exports = {
