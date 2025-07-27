@@ -6,6 +6,6 @@ const router = express.Router() //creates instance of router
 
 router.post('/register',registerUser)
 router.post('/login',loginUser)
-router.get('/current',validateTokenHandler, currentUser)
+router.get('/current',validateTokenHandler, currentUser) 
 
 module.exports = router;

@@ -1,7 +1,13 @@
+const { type } = require('express/lib/response')
 const mongoose = require('mongoose')
 
 //contact schema 
 const contactSchema = mongoose.Schema({
+    user_id :{
+        type: mongoose.Schema.Types.ObjectId,
+        required : true,
+        ref : "User"
+    },
     name :{
         type : String,
         required :[true,"Please enter a contact name"]
